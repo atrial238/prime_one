@@ -22,6 +22,7 @@ const {parallel, watch, src, dest, series, gulp} = require('gulp'),
 	fonter          = require('gulp-fonter'),
 	fs              = require('fs'),
 	newer           = require('gulp-newer'),
+	polyfillLibrary = require('polyfill-library'),
 	path = {
 		build: {
 			html: project_folder + '/',
@@ -101,12 +102,14 @@ function sprite() {
 		.pipe(dest(source_folder + '/img/'));
 }
 
+
+
 function script() {
 	return src(path.src.js)
 		.pipe(fileInclude())
-		.pipe(babel({
+		/*.pipe(babel({
 			presets: ['@babel/env']
-		}))
+		}))*/
 		.pipe(dest(path.build.js))
 		.pipe(uglify())
 		.pipe(rename({
@@ -115,6 +118,8 @@ function script() {
 		.pipe(dest(path.build.js))
 		.pipe(browserSync.stream());
 }
+
+
 
 function css() {
 	return src(path.src.css)
@@ -183,6 +188,7 @@ function fontsStyle() {
 	}
 }
 function cb() { }
+
 
 
 function watchFiles() {

@@ -36,6 +36,8 @@
 	},
 	"dependencies": {
 		"browser-sync": "^2.26.13",
-		"gulp-autoprefixer": "^7.0.1"
+		"core-js": "^3.7.0",
+		"gulp-autoprefixer": "^7.0.1",
+		"polyfill-library": "^3.97.0"
 	}
 }
