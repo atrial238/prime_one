@@ -22,7 +22,7 @@ const {parallel, watch, src, dest, series, gulp} = require('gulp'),
 	fonter          = require('gulp-fonter'),
 	fs              = require('fs'),
 	newer           = require('gulp-newer'),
-	polyfillLibrary = require('polyfill-library'),
+	webpack			 = require("webpack-stream"),
 	path = {
 		build: {
 			html: project_folder + '/',
@@ -104,17 +104,38 @@ function sprite() {
 
 
 
-function script() {
+function scriptDev() {
 	return src(path.src.js)
-		.pipe(fileInclude())
-		/*.pipe(babel({
-			presets: ['@babel/env']
-		}))*/
-		.pipe(dest(path.build.js))
-		.pipe(uglify())
+	.pipe(webpack({
+		mode: 'development',
+		output: {
+			 filename: 'script.js'
+		},
+		watch: false,
+		devtool: "source-map",
+		module: {
+			 rules: [
+				{
+				  test: /\.m?js$/,
+				  exclude: /(node_modules|bower_components)/,
+				  use: {
+					 loader: 'babel-loader',
+					 options: {
+						presets: [['@babel/preset-env', {
+							 debug: true,
+							 corejs: 3,
+							 useBuiltIns: "usage"
+						}]]
+					 }
+				  }
+				}
+			 ]
+		  }
+  }))
+		/*.pipe(uglify())
 		.pipe(rename({
 			extname: '.min.js'
-		}))
+		}))*/
 		.pipe(dest(path.build.js))
 		.pipe(browserSync.stream());
 }
@@ -194,7 +215,7 @@ function cb() { }
 function watchFiles() {
 	watch([path.watch.html], html);
 	watch([path.watch.css], css);
-	watch([path.watch.js], script);
+	watch([path.watch.js], scriptDev);
 	watch([path.watch.img], images);
 }
 
@@ -202,7 +223,7 @@ function clean() {
 	return del(path.clean);
 }
 
-const build = series(clean, parallel(script, images, css, html)),
+const build = series(clean, parallel(scriptDev, images, css, html)),
 	watchTask = parallel(build, watchFiles, browsersync);
 
 exports.watchTask  = watchTask;
@@ -210,7 +231,7 @@ exports.default    = watchTask;
 exports.html       = html;
 exports.css        = css;
 exports.build      = build;
-exports.script     = script;
+exports.scriptDev     = scriptDev;
 exports.images     = images;
 exports.sprite     = sprite;
 exports.otf        = otf;

@@ -5,7 +5,7 @@
 // include('files/scroll.js', {})
 window.addEventListener('DOMContentLoaded', () => {
 	
-	function testWebP(callback) {
+	// function testWebP(callback) {
 
 	var webP = new Image();
 	webP.onload = webP.onerror = function () {
@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	}
 })
 
-	function headerMobile () {
+	// function headerMobile () {
 	const containerMenu = document.querySelectorAll('.header-bottom-menu'),
 			menu = document.querySelectorAll('.header-bottom-menu__list'),
 			menuMobile = document.querySelector('.header-menu-mobile'),
@@ -58,7 +58,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	changeMenu();
 }
 headerMobile();
-	function menuActive() {
+	// function menuActive() {
 	const burger =document.querySelector('.burger-menu'),
 			menu = document.querySelector('.header-menu-mobile');
 
@@ -71,7 +71,7 @@ headerMobile();
 			});
 }
 menuActive();
-	function ibg(){
+	// function ibg(){
 
 	const ibg = document.querySelectorAll(".img-bg");
 			
@@ -88,7 +88,7 @@ menuActive();
 	}
 }
 ibg();
-	function map(n){
+	// function map(n){
 	
 	google.maps.Map.prototype.setCenterWithOffset= function(latlng, offsetX, offsetY) {
 		var map = this;
@@ -139,7 +139,7 @@ if(document.querySelector("#map")){
 
 }
 
-	const forms = document.querySelectorAll('form'),
+	// const forms = document.querySelectorAll('form'),
 		AllInputs = document.querySelectorAll('input'),
 		statusPost = document.querySelector('.form__button-message'),
 		informMessageArray = {
