@@ -47,6 +47,7 @@ const {parallel, watch, src, dest, series, gulp} = require('gulp'),
 		clean: [
 				'./' + project_folder + '/*.html',
 				'./' + project_folder + '/css',
+				// './' + project_folder + '/js'
 				]
 	};
 
@@ -102,8 +103,6 @@ function sprite() {
 		.pipe(dest(source_folder + '/img/'));
 }
 
-
-
 function scriptDev() {
 	return src(path.src.js)
 	.pipe(webpack({
@@ -112,9 +111,20 @@ function scriptDev() {
 			 filename: 'script.js'
 		},
 		watch: false,
-		devtool: "source-map",
+		devtool: "source-map"
+	}))
+	.pipe(dest(path.build.js))
+	.pipe(browserSync.stream());
+}
+function scriptProd () {
+	return src(path.src.js)
+	.pipe(webpack({
+		mode: 'production',
+		output: {
+			filename: 'script.min.js'
+		},
 		module: {
-			 rules: [
+			rules: [
 				{
 				  test: /\.m?js$/,
 				  exclude: /(node_modules|bower_components)/,
@@ -122,24 +132,18 @@ function scriptDev() {
 					 loader: 'babel-loader',
 					 options: {
 						presets: [['@babel/preset-env', {
-							 debug: true,
 							 corejs: 3,
 							 useBuiltIns: "usage"
-						}]]
-					 }
-				  }
+							}]]
+						}
+					}
 				}
-			 ]
-		  }
-  }))
-		/*.pipe(uglify())
-		.pipe(rename({
-			extname: '.min.js'
-		}))*/
-		.pipe(dest(path.build.js))
-		.pipe(browserSync.stream());
+			]
+		}
+	}))
+	.pipe(dest(path.build.js))
+	.pipe(browserSync.stream());
 }
-
 
 
 function css() {
@@ -237,3 +241,4 @@ exports.sprite     = sprite;
 exports.otf        = otf;
 exports.fontsStyle = fontsStyle;
 exports.fonts      = fonts;
+exports.scriptProd = scriptProd;
